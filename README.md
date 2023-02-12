@@ -35,7 +35,7 @@ glimpse(data)
 
 data = tibble(data)
 
-# Task 1
+# TASK 1
 #column changes 
 data_clean = data %>% 
   rename(
@@ -59,7 +59,7 @@ data_clean = data %>%
 
 view(data_clean)
 
-# Task 2
+# TASK 2
 ### How many participants are in the dataset?
 n_distinct(data_clean$participant)
 n_distinct(data$participant) ###to compare
@@ -95,9 +95,9 @@ data_clean %>%
              meanaccuracy = mean(accuracy))
 
 # Results:
-### highest accuracy Info_Time
-### fastest response Info_Trial
-### no perfect trade-off 
+- highest accuracy Info_Time
+- fastest response Info_Trial
+- no perfect trade-off 
 
 
 ### Calculate a summary, which includes the average accuracy and average response time per participant, as well as the percentage of trials below 150 ms (too fast trials) and above 5000 ms (too slow trials). Are there any participants with more then 10% fast or slow trials?
@@ -171,9 +171,9 @@ ggplot(data = data_clean, mapping = aes(x = condition, y = mean_rt)) +
 
 
 
-### Part 2.1
+# Part 2.1
 
-# ANOVA 1
+### ANOVA 1
 
 
 aggregate_data <-  data_clean %>% 
@@ -192,14 +192,14 @@ summary(model_fit_anova)
 
 
 
-# ANOVA 2
+### ANOVA 2
 model_fit_anova = aov(mean_accuracy ~ block_number + block_type + feedback_type, 
                       data = aggregate_data)
 summary(model_fit_anova)
 
 
 
-## Part 2.2: FULL MODEL 
+# Part 2.2: FULL MODEL 
 
 controlmodel <- data_clean %>%
     glmerControl(rt ~ block_number + (block_number | participant),

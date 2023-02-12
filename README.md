@@ -1,6 +1,8 @@
-# Project 
-# Date: 24 May 2022
+# Data Science Project, Date: 24 May 2022
 
+In this project, I will analyze data from a random dot motion task, a classical paradigm in perceptual decision making research, published in 2017 by Nathan Evans and Scott Brown. 
+
+# Library
 library(tidyverse)
 library(dplyr)
 library(haven)
@@ -8,16 +10,16 @@ library(tidyr)
 library(lme4)
 
 
-# define the data folder
+### Define the data folder
 data_folder = '~/OneDrive/Studium/Master FS 2022/Programming in R/Homework/Final Project/Data/'
 
-# define lists of files
+### Define lists of files
 list_files = paste(data_folder, list.files(path=data_folder), sep="")
 
-# apply the read_delim function to each element in the list
+### Apply the read_delim function to each element in the list
 data_list = lapply(list_files, function(x) read_delim(x, delim='\t')) 
 
-# loop through all the participants to add the participant number as a column as well as the name of the file, since we have no other way to know in which conditions the participants were in
+### Loop through all the participants to add the participant number as a column as well as the name of the file, since we have no other way to know in which conditions the participants were in
 data = NULL
 participant = 0
 
@@ -32,7 +34,8 @@ head(data)
 glimpse(data)
 
 data = tibble(data)
-### Task 1
+
+# Task 1
 #column changes 
 data_clean = data %>% 
   rename(
@@ -56,19 +59,19 @@ data_clean = data %>%
 
 view(data_clean)
 
-###Task 2
-###How many participants are in the dataset?
+# Task 2
+### How many participants are in the dataset?
 n_distinct(data_clean$participant)
-n_distinct(data$participant) #to compare
+n_distinct(data$participant) ###to compare
 
-#85 in total
+### -> 85 in total
 
 ### How many participants were there in each condition?
 summarize(group_by(data_clean,condition),
           n_distinct (participant))
 
 ### Did the participants in the fixed time conditions perform more or less trials than the participants in the fixed trials conditions?
-#add block_type and feedback_type 
+###Add block_type and feedback_type 
 data_clean = separate(data_clean, col = condition, into = c("block_type", "feedback_type"), sep = "_")
 
 data_clean$condition = data$condition
@@ -79,24 +82,26 @@ summarize(n=n(), group_by(data_clean,participant, block_type))
 
 summarize(group_by(data_clean, block_type), n_distinct (trial_number))
 
-#FixedTime                          64
-#FixedTrial                         40
-# the participants in the fixed time conditions performed more trials than the participants in the fixed trails conditions. 
+### FixedTime                          64
+#### FixedTrial                         40
+###The participants in the fixed time conditions performed more trials than the participants in the fixed trails conditions. 
 
 
 
-##Calculate a summary, which includes the average and SD of accuracy and response time per condition (which are 6 in total) and use this to describe the overall performance across participants in these conditions (i.e., which conditions produced hiigher accuracy, which produced faster responses? Do accuracy and speed always trade off?).
+### Calculate a summary, which includes the average and SD of accuracy and response time per condition (which are 6 in total) and use this to describe the overall performance across participants in these conditions (i.e., which conditions produced hiigher accuracy, which produced faster responses? Do accuracy and speed always trade off?).
 data_clean %>% 
   group_by(condition) %>% 
   summarise (meanrt= mean(rt),
              meanaccuracy = mean(accuracy))
 
-###highest accuracy Info_Time
-###fastest response Info_Trial
-###no perfect trade-off 
+# Results:
+### highest accuracy Info_Time
+### fastest response Info_Trial
+### no perfect trade-off 
 
 
-##Calculate a summary, which includes the average accuracy and average response time per participant, as well as the percentage of trials below 150 ms (too fast trials) and above 5000 ms (too slow trials). Are there any participants with more then 10% fast or slow trials?
+### Calculate a summary, which includes the average accuracy and average response time per participant, as well as the percentage of trials below 150 ms (too fast trials) and above 5000 ms (too slow trials). Are there any participants with more then 10% fast or slow trials?
+
 data_clean <- data_clean %>% mutate(slow_trials = case_when(rt >= 5 ~ 1,
                                                             rt < 5 ~ 0))
 
@@ -111,7 +116,7 @@ data_clean <- data_clean %>%
 view(data_clean)
 
 
-###TASK 3:  Exclude participants
+# TASK 3:  Exclude participants
 
 participants_to_exclude = filter(data_clean, data_clean$mean_ACC_p <.6)
 
@@ -121,27 +126,27 @@ for (n in 1:length(participants_to_exclude)) {
 }
 
 
-#TASK 4: Data visualization
+# TASK 4: Data visualization
 # Plots  
 
-#data_clean %>% 
+###data_clean %>% 
   #group_by(condition, block_number) %>% 
   #summarize (mean_rt= mean(rt),
    #          mean_accuracy_block_condition = mean_ACC_p)
 
 
-#plot 1
+### plot 1
 ggplot(data = data_clean, mapping = aes(x = data_clean$condition, y = data_clean$mean_ACC_p, color=condition)) + 
   geom_line()
 
-#plot 2
+### plot 2
 ggplot(data = data_clean, mapping = aes(x = data_clean$condition, y = data_clean$rt, color=condition)) + 
   geom_line()
 
 data_clean$mean_accuracy_block_condition = mean(data_clean$accuracy)
 data_clean$mean_rt = mean(data_clean$rt)
 
-# point plots accuracy
+### point plots accuracy
 
 ggplot(data = data_clean, mapping = aes(x = data_clean$condition, y = mean_accuracy_block_condition)) +
   
@@ -152,7 +157,7 @@ ggplot(data = data_clean, mapping = aes(x = data_clean$condition, y = mean_accur
   labs(x = '6 Conditions', y = 'Mean Accuracy')
 
 
-# point plots response time 
+### point plots response time 
 
 
 ggplot(data = data_clean, mapping = aes(x = condition, y = mean_rt)) +
@@ -166,11 +171,9 @@ ggplot(data = data_clean, mapping = aes(x = condition, y = mean_rt)) +
 
 
 
-####Part 2
+### Part 2.1
 
-## 2.1 ##
-
-#1: ANOVA
+# ANOVA 1
 
 
 aggregate_data <-  data_clean %>% 
@@ -189,14 +192,14 @@ summary(model_fit_anova)
 
 
 
-#2 ANOVA
+# ANOVA 2
 model_fit_anova = aov(mean_accuracy ~ block_number + block_type + feedback_type, 
                       data = aggregate_data)
 summary(model_fit_anova)
 
 
 
-##2.2 FULL MODEL 
+## Part 2.2: FULL MODEL 
 
 controlmodel <- data_clean %>%
     glmerControl(rt ~ block_number + (block_number | participant),
@@ -204,7 +207,7 @@ controlmodel <- data_clean %>%
     rt ~ feedback_type + (feedback_type | participant))
 summary(controlmodel)
 
-#multilevel regression
+### Multilevel regression
 fullmodel  <- lm(rt ~ block_number + block_type + feedback_type, data = data_clean)
 
 summary(fullmodel)

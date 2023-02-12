@@ -1,0 +1,82 @@
+All Studies:
+
+id: participant id code
+gender: participant gender. 1 = male, 2 = female
+age: participant age
+income: participant annual household income on categorical scale (see main text of paper)
+
+Study 1 (WTP_1_data)
+
+p1-p10: whether the "typical" survey respondent would pay more (coded 1) or less (coded 0) than oneself, for each of the 10 products 
+task: whether the participant had to judge the proportion of other people who "have more money than you do" (coded 1) or the proportion who "have less money than you do" (coded 0)
+havemore: participant's response when task = 1
+haveless: participant's response when task = 0
+pcmore: participant's estimate of the proportion of people who have more than they do (calculated as 100-haveless when task=0)
+
+
+
+
+Study 2a and Study 2b (WTP_2a_data and WTP_2b_data)
+
+comp: response to "How do you think your discretionary income compares with that of the next person who will take this survey?". 9-point scale. 1 = Mine is very much lower...9 = Mine is very much higher
+p1s-p10o: estimated WTP for the 10 products (p1-p10) for self (column titles end "s") and other (column titles end "o")
+
+
+
+
+Study 3 (WTP_3_data)
+
+cond: whether the person whose WTP was to be estimated was described as relatively low-income (coded Low) or high income (coded High)
+p1-p10: estimated WTP for the 10 products
+
+
+
+
+
+Studies 4, 5a, 5b (WTP_4_data, WTP_5a_data, WTP_5b_data)
+
+sscheck: whether the participant passed the attention/memory check probing their recollection of the sample size for the putative auction (0=no, 1=yes)
+rulescheck: whether the participant passed the attention/memory check probing their recollection of the rules of the auction (0=no, 1=yes)
+bidest: estimated mean bid
+incest: estimated mean income (in "thousands of dollars per year" in Study 4 and as a precise value in Studies 5a and 5b; see main text)
+nation: free-text responses to question asking nationality (n/a = question not included in survey)
+language: free-text responses to question asking first language (n/a = question not included in survey)
+
+
+
+Study 4
+
+order: estimate WTP then income (coded 0) or income then WTP (coded 1)
+
+
+
+
+Study 5 part 1 (results of auction)
+
+income: self-reported annual pre-tax income (stated as a precise value, not using a categorical scale)
+bid: amount bid
+
+
+
+
+
+Study 5a 
+
+ppt_origin: source of participant sample. 0 = Prolific Academic platform; 1 = University of Essex
+
+
+
+
+Study 5b
+
+cond: 0 = no accuracy incentive; 1 = accuracy incentive
+NOTE: Study 5b bidest and incest responses are in dollars. For the analysis, these values were multiplied by 0.65192, the exchange ratewith Sterling on the day of the study, for parity with Study 5a
+
+
+
+
+Study 6
+
+order: SO = report self-income then estimate other-income, OS = estimate other-income then report self-income
+self: self-reported annual pre-text income
+other: estimated annual pre-tax income of next person to take part in survey

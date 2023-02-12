@@ -1,6 +1,4 @@
-# project
-# Final Project
-# Name: Panitda Huynh
+# Project 
 # Date: 24 May 2022
 
 library(tidyverse)
@@ -186,7 +184,7 @@ model_fit_anova = aov(mean_rt ~ block_number + block_type + feedback_type,
 summary(model_fit_anova)
 
 #Interpretation: all three (block_number, block_type and feedback_type) had a signficant effect on the mean response time per participant 
-# from anova alone it is unclear how each condition influences the mean rt 
+###from anova alone it is unclear how each condition influences the mean rt 
 
 
 
